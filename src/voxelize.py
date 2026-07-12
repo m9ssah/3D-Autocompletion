@@ -1,4 +1,4 @@
-import argsparse
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -8,10 +8,10 @@ from tqdm import tqdm
 
 def normalize_mesh(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     mesh = mesh.copy()
-    mesh.verticies -= mesh.bounding_box.centroid
+    mesh.vertices -= mesh.bounding_box.centroid
     extent = mesh.bounding_box.extents.max()
     if extent > 0:
-        mesh.verticies /= extent
+        mesh.vertices /= extent
     return mesh
 
 
@@ -27,7 +27,7 @@ def mesh_to_voxel(mesh: trimesh.Trimesh, resolution: int = 32) -> np.ndarray:
 
     grid = voxelized.matrix.astype(np.float32)
 
-    out = np.zeors((resolution, resolution, resolution), dtype=np.float32)
+    out = np.zeros((resolution, resolution, resolution), dtype=np.float32)
     src_slices, dst_slices = [], []
     for s in grid.shape:
         if s <= resolution:
@@ -43,7 +43,7 @@ def mesh_to_voxel(mesh: trimesh.Trimesh, resolution: int = 32) -> np.ndarray:
 
 
 def main():
-    parser = argsparse.ArgumentParser()
+    parser = argparse.ArgumentParser()
     parser.add_argument("--input_dir", required=True)
     parser.add_argument("--output_dir", required=True)
     parser.add_argument("--resolution", type=int, default=32)
