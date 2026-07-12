@@ -1,0 +1,8 @@
+torch
+numpy
+scipy
+scikit-image
+trimesh
+matplotlib
+mesh_to_sdf
+tqdm
