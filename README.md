@@ -5,7 +5,7 @@
 
 | Days | Richard | Massah |
 |---|---|---|
-| 1-2 | **Joint:** masking function, generic GMM/EM utility (tested on synthetic codes, not real ones yet), generic evaluation utility (masked IoU/SDF error, solve-time timer, marching-cubes render helper). Kick off full-category batch voxelize/SDF conversion in the background using your existing scripts. | Same |
+| 1-2 | **Joint:** masking function, generic GMM/EM utility (tested on synthetic codes, not real ones yet), generic evaluation utility (masked IoU/SDF error, solve-time timer, marching-cubes render helper). begin full-category batch voxelize/SDF conversion in the background using the existing scripts. | Same |
 | 3-4 | PCA fit (SVD), reconstruction eval using the shared utility | Finish/train conv autoencoder, reconstruction eval |
 | 5-6 | PCA closed-form completion (single-Gaussian case first) | AE gradient-based completion (Adam optimization through frozen decoder) |
 | 7-8 | Extend to full GMM-weighted closed-form completion; draft your Problem Formulation subsection (PCA half) and Lit Review (classical papers) whenever you have downtime | Refine/tune AE completion; draft your Problem Formulation subsection (AE half) and Lit Review (modern papers) whenever you have downtime |
