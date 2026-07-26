@@ -2,9 +2,10 @@
 
 ## Day 1-2 Task Progress:
 
-- [ ] Repo structure **(after conversion is finished, created data/sdf_conversion/[data_splits])**
+- [X] Repo structure **(after conversion is finished, create ModelNet40/sdf_conversion/[data_splits])**
 - [X] Train/val/test split 
-- [X] SDF conversion pipeline pass
+- [X] SDF voxelization conversion pipeline
+- [X] pass data through sdf conversion pipeline
 - [ ] Masking function built, test-set masks pre-generated and saved, visually spot-checked
 - [ ] GMM/EM implemented from scratch and validated on synthetic data
 - [ ] Evaluation utilities (masked IoU/SDF error, timer, result recorder, render helper) built and unit-tested on dummy arrays
