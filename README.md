@@ -1,7 +1,16 @@
 # 3D-Autocompletion
 
-## Task Split:
+## Day 1-2 Task Progress:
 
+- [ ] Repo structure **(after conversion is finished, created data/sdf_conversion/[data_splits])**
+- [X] Train/val/test split 
+- [X] SDF conversion pipeline pass
+- [ ] Masking function built, test-set masks pre-generated and saved, visually spot-checked
+- [ ] GMM/EM implemented from scratch and validated on synthetic data
+- [ ] Evaluation utilities (masked IoU/SDF error, timer, result recorder, render helper) built and unit-tested on dummy arrays
+
+
+## Task Split:
 
 | Days | Richard | Massah |
 |---|---|---|
