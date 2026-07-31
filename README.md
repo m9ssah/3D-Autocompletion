@@ -1,13 +1,15 @@
 # 3D-Autocompletion
 
+Montiors, 48x48x48
+
 ## Day 1-2 Task Progress:
 
 - [X] Repo structure **(after conversion is finished, create ModelNet40/sdf_conversion/[data_splits])**
 - [X] Train/val/test split 
 - [X] SDF voxelization conversion pipeline
 - [X] pass data through sdf conversion pipeline
-- [ ] Masking function built, test-set masks pre-generated and saved, visually spot-checked
-- [ ] GMM/EM implemented from scratch and validated on synthetic data
+- [X] Masking function built, test-set masks pre-generated and saved, visually spot-checked
+- [X] GMM/EM implemented from scratch and validated on synthetic data
 - [ ] Evaluation utilities (masked IoU/SDF error, timer, result recorder, render helper) built and unit-tested on dummy arrays
 
 
