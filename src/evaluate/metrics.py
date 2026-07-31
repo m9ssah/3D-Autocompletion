@@ -1,3 +1,9 @@
+"""
+Utility functions for evaluating SDF predictions against ground-truth SDFs.
+
+Usage: 
+"""
+
 import warnings
 
 import numpy as np
@@ -64,7 +70,7 @@ def masked_sdf_error(pred_grid, gt_grid, mask, norm="l1"):
     if norm == "l1":
         return np.abs(diff).mean()
     elif norm == "l2":
-        return np.sqrt((diff ** 2).mean())
+        return np.sqrt((diff**2).mean())
     else:
         raise ValueError(f"Invalid norm {norm}, must be 'l1' or 'l2'")
 
@@ -73,9 +79,13 @@ if __name__ == "__main__":
     N = 20
     center = (N - 1) / 2
     zz, yy, xx = np.meshgrid(np.arange(N), np.arange(N), np.arange(N), indexing="ij")
-    dist_from_center = np.sqrt((xx - center) ** 2 + (yy - center) ** 2 + (zz - center) ** 2)
+    dist_from_center = np.sqrt(
+        (xx - center) ** 2 + (yy - center) ** 2 + (zz - center) ** 2
+    )
     radius = N / 3
-    gt_grid = (dist_from_center - radius).astype(np.float32)  # sphere SDF: negative inside
+    gt_grid = (dist_from_center - radius).astype(
+        np.float32
+    )  # sphere SDF: negative inside
 
     rng = np.random.default_rng(42)
     mask = np.ones_like(gt_grid, dtype=np.uint8)
@@ -94,7 +104,9 @@ if __name__ == "__main__":
     print("FULLY-OBSERVED MASK (no occluded region, expect nan + warning):")
     full_mask = np.ones_like(gt_grid, dtype=np.uint8)
     print("iou:", masked_iou(noisy_grid, gt_grid, full_mask))
-    print("sdf_error (l1):", masked_sdf_error(noisy_grid, gt_grid, full_mask, norm="l1"))
+    print(
+        "sdf_error (l1):", masked_sdf_error(noisy_grid, gt_grid, full_mask, norm="l1")
+    )
 
     print("MISMATCHED SHAPES (expect ValueError):")
     try:

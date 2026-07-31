@@ -1,3 +1,10 @@
+"""
+Utility functions for rendering 3D meshes from SDF grids.
+
+Usage:
+    check main block
+"""
+
 import warnings
 
 import matplotlib.pyplot as plt
@@ -39,7 +46,9 @@ def render_comparison(pred_grid, gt_grid, level=0.0, save_path=None):
     """
     fig = plt.figure(figsize=(10, 5))
 
-    for i, (grid, title) in enumerate([(pred_grid, "predicted"), (gt_grid, "ground truth")]):
+    for i, (grid, title) in enumerate(
+        [(pred_grid, "predicted"), (gt_grid, "ground truth")]
+    ):
         mesh = grid_to_mesh(grid, level=level)
         ax = fig.add_subplot(1, 2, i + 1, projection="3d")
 
@@ -73,7 +82,9 @@ if __name__ == "__main__":
     N = 20
     center = (N - 1) / 2
     zz, yy, xx = np.meshgrid(np.arange(N), np.arange(N), np.arange(N), indexing="ij")
-    dist_from_center = np.sqrt((xx - center) ** 2 + (yy - center) ** 2 + (zz - center) ** 2)
+    dist_from_center = np.sqrt(
+        (xx - center) ** 2 + (yy - center) ** 2 + (zz - center) ** 2
+    )
     radius = N / 3
     gt_grid = (dist_from_center - radius).astype(np.float32)  # sphere SDF
 
