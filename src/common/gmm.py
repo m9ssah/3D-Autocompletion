@@ -19,7 +19,7 @@ def _gaussian_logpdf(X, mean, cov, reg_covar):
 
     diff = (X - mean).T  # (d, n)
     y = solve_triangular(L, diff, lower=True)  # (d, n), y = L^-1 (x - mean)
-    squared_maha = np.sum(y ** 2, axis=0)  # (n,)
+    squared_maha = np.sum(y**2, axis=0)  # (n,)
     log_det = 2.0 * np.sum(np.log(np.diag(L)))
 
     return -0.5 * (d * np.log(2 * np.pi) + log_det + squared_maha)
@@ -73,9 +73,7 @@ class GaussianMixtureEM:
         means = [X[first]]
 
         for _ in range(1, self.n_components):
-            sq_dists = np.min(
-                [np.sum((X - m) ** 2, axis=1) for m in means], axis=0
-            )
+            sq_dists = np.min([np.sum((X - m) ** 2, axis=1) for m in means], axis=0)
             probs = sq_dists / sq_dists.sum()
             next_idx = rng.choice(n_samples, p=probs)
             means.append(X[next_idx])
@@ -85,7 +83,8 @@ class GaussianMixtureEM:
     def _e_step(self, X, weights, means, covariances):
         log_prob_matrix = np.stack(
             [
-                np.log(weights[k]) + _gaussian_logpdf(X, means[k], covariances[k], self.reg_covar)
+                np.log(weights[k])
+                + _gaussian_logpdf(X, means[k], covariances[k], self.reg_covar)
                 for k in range(self.n_components)
             ],
             axis=1,
@@ -125,6 +124,12 @@ class GaussianMixtureEM:
                 covariances[k] = (
                     np.einsum("n,ni,nj->ij", responsibilities[:, k], diff, diff) / Nk[k]
                 )
+            weights /= weights.sum()  # renormalize in case some components collapsed
+
+        log_norm, _ = self._e_step(X, weights, means, covariances)
+        history.append(
+            log_norm.sum()
+        )  # so that the final element matches the returned params
 
         return weights, means, covariances, history
 
@@ -155,7 +160,9 @@ class GaussianMixtureEM:
     def predict_proba(self, X):
         """per-sample, per-component responsibilities under the fitted mixture"""
         X = np.asarray(X, dtype=np.float64)
-        _, responsibilities = self._e_step(X, self.weights_, self.means_, self.covariances_)
+        _, responsibilities = self._e_step(
+            X, self.weights_, self.means_, self.covariances_
+        )
         return responsibilities
 
     def sample(self, n_samples, random_state=None):
@@ -164,7 +171,9 @@ class GaussianMixtureEM:
             random_state if random_state is not None else self.random_state
         )
         d = self.means_.shape[1]
-        component_choices = rng.choice(self.n_components, size=n_samples, p=self.weights_)
+        component_choices = rng.choice(
+            self.n_components, size=n_samples, p=self.weights_
+        )
 
         samples = np.empty((n_samples, d))
         for k in range(self.n_components):
@@ -200,7 +209,9 @@ if __name__ == "__main__":
     X = np.empty((n_samples, 2))
     for k in range(3):
         idx = component_choices == k
-        X[idx] = rng.multivariate_normal(true_means[k], true_covariances[k], size=idx.sum())
+        X[idx] = rng.multivariate_normal(
+            true_means[k], true_covariances[k], size=idx.sum()
+        )
 
     print("FITTING K=3 GMM ON SYNTHETIC DATA (ground truth known):")
     gmm = GaussianMixtureEM(n_components=3, n_init=5, random_state=42)
@@ -208,7 +219,9 @@ if __name__ == "__main__":
 
     history = np.array(gmm.log_likelihood_history_)
     n_decreases = (np.diff(history) < -1e-8).sum()
-    print(f"log-likelihood trace length: {len(history)}, decreases: {n_decreases} (expect 0)")
+    print(
+        f"log-likelihood trace length: {len(history)}, decreases: {n_decreases} (expect 0)"
+    )
 
     # match recovered components to true ones by nearest mean (EM doesn't preserve ordering)
     best_perm, best_cost = None, np.inf
@@ -222,19 +235,27 @@ if __name__ == "__main__":
         print(f"component {k}:")
         print(f"  true weight={true_weights[k]:.3f}   recovered={gmm.weights_[j]:.3f}")
         print(f"  true mean={true_means[k]}   recovered={np.round(gmm.means_[j], 3)}")
-        print(f"  true cov=\n{true_covariances[k]}\n  recovered=\n{np.round(gmm.covariances_[j], 3)}")
+        print(
+            f"  true cov=\n{true_covariances[k]}\n  recovered=\n{np.round(gmm.covariances_[j], 3)}"
+        )
 
-    print("\nFITTING K=1 (single-gaussian special case) AND CHECKING AGAINST DIRECT MLE:")
+    print(
+        "\nFITTING K=1 (single-gaussian special case) AND CHECKING AGAINST DIRECT MLE:"
+    )
     single = GaussianMixtureEM(n_components=1, n_init=1, random_state=0)
     single.fit(X)
     direct_mean = X.mean(axis=0)
-    direct_cov = np.cov(X.T, bias=True)  # bias=True: EM's M-step is the population (MLE) covariance
+    direct_cov = np.cov(
+        X.T, bias=True
+    )  # bias=True: EM's M-step is the population (MLE) covariance
     print("mean diff (expect ~0):", np.abs(single.means_[0] - direct_mean).max())
     print("cov diff (expect ~0):", np.abs(single.covariances_[0] - direct_cov).max())
 
     print("\nsample() sanity check -- drawing 5 points from the fitted K=3 mixture:")
     print(gmm.sample(5, random_state=1))
 
-    print("\nscore_samples() / predict_proba() sanity check on the first 3 training points:")
+    print(
+        "\nscore_samples() / predict_proba() sanity check on the first 3 training points:"
+    )
     print("log p(x):", gmm.score_samples(X[:3]))
     print("responsibilities:\n", np.round(gmm.predict_proba(X[:3]), 3))
