@@ -8,8 +8,8 @@ Montiors, 48x48x48
 - [X] Train/val/test split 
 - [X] SDF voxelization conversion pipeline
 - [X] pass data through sdf conversion pipeline
-- [ ] Masking function built, test-set masks pre-generated and saved, visually spot-checked
-- [ ] GMM/EM implemented from scratch and validated on synthetic data
+- [X] Masking function built, test-set masks pre-generated and saved, visually spot-checked
+- [X] GMM/EM implemented from scratch and validated on synthetic data
 - [ ] Evaluation utilities (masked IoU/SDF error, timer, result recorder, render helper) built and unit-tested on dummy arrays
 
 
