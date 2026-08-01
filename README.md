@@ -1,6 +1,6 @@
 # 3D-Autocompletion
 
-Montiors, 48x48x48
+Monitors, 48x48x48
 
 ## Day 1-2 Task Progress:
 
