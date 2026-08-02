@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 
 class SDFDataset(Dataset):
     def __init__(self, split="train"):
-        root = Path(__file__).resolve().parents[3]
+        root = Path(__file__).resolve().parents[2]
         self.files = sorted(
             (root / "ModelNet40" / "sdf_conversion" / "monitor" / split).glob("*.npy")
         )

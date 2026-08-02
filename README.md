@@ -15,11 +15,11 @@ Montiors, 48x48x48
 ## Day 3-4 Task Progress:
 - [ ] unify k value (32?)
 - [ ] PCA: SVD computed via economy method, k-sweep reconstruction chart, artifacts saved
-- [ ] AE: SDF value range checked (truncated if needed), trained, reconstruction evaluated via the shared (all-ones-mask) utility, artifacts saved
+- [X] AE: SDF value range checked (truncated if needed), trained, reconstruction evaluated via the shared (all-ones-mask) utility, artifacts saved
     - [X] Encoder: a few Conv3d layers downsampling 48³ → roughly 6³ (stride-2 convs, doubling channels each step: 1→16→32→64), flattened and projected to your k=32 latent vector via a final linear layer
     - [X] Decoder: mirror this with ConvTranspose3d layers back up to 48³
     - [X] Output activation: linear, b/c regressing continuous SDF values now, not occupancy probabilities
-    - [ ] Loss: MSE, not BCE, for the same reason
+    - [X] Loss: MSE, not BCE, for the same reason
 - [ ] Both looked at at least one rendered reconstruction (marching cubes) per branch, not just the numeric error
 
 ## Task Split:

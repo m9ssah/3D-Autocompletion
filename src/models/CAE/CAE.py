@@ -17,7 +17,7 @@ class Conv3dAE(nn.Module):
         super().__init__()
         assert input_size % 8 == 0, "Input size must be divisible by 8"
 
-        self.spactial_dim = input_size // 8
+        self.spatial_dim = input_size // 8
         self.flat_size = 64 * self.spatial_dim**3
 
         self.encoder_conv = nn.Sequential(
