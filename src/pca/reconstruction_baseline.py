@@ -1,15 +1,3 @@
-"""
-PCA reconstruction baseline for monitor SDF grids.
-
-Fits PCA on the training shapes at a few different k values, then checks how
-well it reconstructs the held-out validation shapes. We reuse the eval utils
-for this by passing an all-zero mask, so the "occluded" region is just the
-whole grid -- no actual masking/completion happens here, that's later. This
-is just checking PCA can represent a monitor shape okay before we try to
-complete a partial one.
-
-"""
-
 import sys
 from pathlib import Path
 
@@ -18,8 +6,8 @@ import numpy as np
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from src.evaluate import ResultRecorder, masked_iou, masked_sdf_error  # noqa: E402
-from src.pca.pca import PCA  # noqa: E402
+from src.evaluate import ResultRecorder, masked_iou, masked_sdf_error 
+from src.pca.pca import PCA 
 
 DATA_DIR = REPO_ROOT / "ModelNet40" / "sdf_conversion" / "monitor"
 RESULTS_PATH = REPO_ROOT / "artifacts" / "results" / "pca_reconstruction_baseline.csv"
@@ -43,7 +31,7 @@ def main():
     X_train = train_grids.reshape(len(train_grids), -1)
     X_val = val_grids.reshape(len(val_grids), -1)
 
-    full_mask = np.zeros(grid_shape, dtype=np.uint8)  # all zeros = nothing observed, so we score the whole grid
+    full_mask = np.zeros(grid_shape, dtype=np.uint8) 
     recorder = ResultRecorder()
 
     for k in K_VALUES:
