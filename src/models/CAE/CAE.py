@@ -30,6 +30,7 @@ class Conv3dAE(nn.Module):
         )
 
         self.to_latent = nn.Linear(self.flat_size, latent_dim)
+        self.from_latent = nn.Linear(latent_dim, self.flat_size)
 
         self.decoder_conv = nn.Sequential(
             nn.ConvTranspose3d(64, 32, kernel_size=4, stride=2, padding=1),
@@ -40,12 +41,15 @@ class Conv3dAE(nn.Module):
         )
 
     def encode(self, x):
-        pass
+        h = self.encoder_conv(x)
+        h = h.flatten(start_dim=1)
+        return self.to_latent(h)
 
     def decode(self, z):
-        pass
+        h = self.from_latent(z)
+        h = h.view(-1, 64, self.spatial_dim, self.spatial_dim, self.spatial_dim)
+        return self.decoder_conv(h)
 
     def forward(self, x):
-        x = self.encoder(x)
-        x = self.decoder(x)
-        return x
+        z = self.encode(x)
+        return self.decode(z)
