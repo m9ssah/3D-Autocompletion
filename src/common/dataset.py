@@ -1,7 +1,8 @@
 from pathlib import Path
+
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader, Dataset
 
 TSDF_TRUNCATION = 0.1
 
@@ -30,10 +31,3 @@ class SDFDataset(Dataset):
         sdf = np.load(self.files[index]).astype(np.float32)
         sdf = truncate_sdf(sdf, self.truncation)
         return torch.from_numpy(sdf).unsqueeze(0)
-
-
-train_dataset = SDFDataset("train")
-val_dataset = SDFDataset("validation")
-test_dataset = SDFDataset("test")
-
-train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)

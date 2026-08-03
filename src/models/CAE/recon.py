@@ -1,13 +1,16 @@
-import torch
-import numpy as np
 from pathlib import Path
 
+import numpy as np
+import torch
+
+from ...common.dataset import SDFDataset, truncate_sdf
 from .CAE import Conv3dAE
-from common.dataset import SDFDataset, truncate_sdf
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-CHECKPOINT_PATH = PROJECT_ROOT / "artifacts" / "cae" / "conv3d_ae_v4_tsdf.pt"
-OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "results" / "renders"
+CHECKPOINT_PATH = (
+    PROJECT_ROOT / "artifacts" / "cae" / "conv3d_ae_64_geometry_loss_v4.pt"
+)
+OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "cae" / "renders"
 
 
 def reconstruct(model, grid, device):
@@ -59,6 +62,5 @@ if __name__ == "__main__":
     print(f"full reconstruction MSE: {mse}")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    np.save(OUTPUT_DIR / "test4_tsdf_original.npy", original)
-    np.save(OUTPUT_DIR / "test4_tsdf_recon.npy", reconstruction)
+    np.save(OUTPUT_DIR / "test_geometry_recon_v4.npy", reconstruction)
     print(f"saved both grids to {OUTPUT_DIR}")
