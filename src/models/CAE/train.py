@@ -15,7 +15,7 @@ def train(model, epochs, batch_size, learning_rate, train_dataset, val_dataset, 
     torch.manual_seed(42)
     model.to(device)
 
-    criterion = nn.MSELoss()
+    criterion_val = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     train_loader = torch.utils.data.DataLoader(
@@ -35,7 +35,7 @@ def train(model, epochs, batch_size, learning_rate, train_dataset, val_dataset, 
 
             optimizer.zero_grad()
             recon = model(batch)
-            loss = criterion(recon, batch)
+            loss = weighted_mse_loss(recon, batch)
             loss.backward()
             optimizer.step()
 
@@ -48,7 +48,7 @@ def train(model, epochs, batch_size, learning_rate, train_dataset, val_dataset, 
             for batch in val_loader:
                 batch = batch.to(device)
                 recon = model(batch)
-                loss = criterion(recon, batch)
+                loss = criterion_val(recon, batch)
                 val_loss += loss.item() * batch.size(0)
             val_loss /= len(val_dataset)
 
@@ -56,6 +56,17 @@ def train(model, epochs, batch_size, learning_rate, train_dataset, val_dataset, 
         history["val_loss"].append(val_loss)
 
     return history
+
+
+def weighted_mse_loss(recon, target, truncation=0.1, surface_weight=5.0):
+    """
+    MSE that upweights voxels near the SDF zero-crossing (the actual surface).
+    Far-field SDF values are geometrically uninteresting but dominate a naive
+    MSE by sheer voxel count -- this is what causes thin structures (the
+    monitor's arm) to get neglected relative to large flat regions (the screen).
+    """
+    weight = torch.where(target.abs() < truncation, surface_weight, 1.0)
+    return (weight * (recon - target) ** 2).mean()
 
 
 def plot_history(history):
@@ -81,8 +92,8 @@ if __name__ == "__main__":
 
     history = train(
         model,
-        epochs=50,
-        batch_size=2,
+        epochs=100,
+        batch_size=8,
         learning_rate=1e-3,
         train_dataset=train_dataset,
         val_dataset=val_dataset,
@@ -91,6 +102,6 @@ if __name__ == "__main__":
     plot_history(history)
 
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-    checkpoint_path = ARTIFACT_DIR / "conv3d_ae.pt"
+    checkpoint_path = ARTIFACT_DIR / "conv3d_ae_v2.pt"
     torch.save(model.state_dict(), checkpoint_path)
     print(f"checkpoint saved to: {checkpoint_path}")
