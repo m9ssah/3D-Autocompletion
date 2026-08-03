@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 from .CAE import Conv3dAE
-from common.dataset import SDFDataset
+from common.dataset import SDFDataset, TSDF_TRUNCATION
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "cae"
@@ -58,7 +58,7 @@ def train(model, epochs, batch_size, learning_rate, train_dataset, val_dataset, 
     return history
 
 
-def weighted_mse_loss(recon, target, truncation=0.1, surface_weight=5.0):
+def weighted_mse_loss(recon, target, truncation=TSDF_TRUNCATION, surface_weight=5.0):
     """
     MSE that upweights voxels near the SDF zero-crossing (the actual surface).
     Far-field SDF values are geometrically uninteresting but dominate a naive
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     train_dataset = SDFDataset(split="train")
     val_dataset = SDFDataset(split="validation")
-    model = Conv3dAE(input_size=48, latent_dim=32)
+    model = Conv3dAE(input_size=48, latent_dim=64)
 
     history = train(
         model,
@@ -102,6 +102,6 @@ if __name__ == "__main__":
     plot_history(history)
 
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-    checkpoint_path = ARTIFACT_DIR / "conv3d_ae_v2.pt"
+    checkpoint_path = ARTIFACT_DIR / "conv3d_ae_v4_tsdf.pt"
     torch.save(model.state_dict(), checkpoint_path)
     print(f"checkpoint saved to: {checkpoint_path}")

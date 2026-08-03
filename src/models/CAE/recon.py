@@ -3,10 +3,10 @@ import numpy as np
 from pathlib import Path
 
 from .CAE import Conv3dAE
-from common.dataset import SDFDataset
+from common.dataset import SDFDataset, truncate_sdf
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-CHECKPOINT_PATH = PROJECT_ROOT / "artifacts" / "cae" / "conv3d_ae_v2.pt"
+CHECKPOINT_PATH = PROJECT_ROOT / "artifacts" / "cae" / "conv3d_ae_v4_tsdf.pt"
 OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "results" / "renders"
 
 
@@ -19,19 +19,20 @@ def reconstruct(model, grid, device):
         raise ValueError(f"Expected a 3D SDF grid, got shape {grid.shape}")
 
     model.eval()
-    x = torch.from_numpy(np.asarray(grid, dtype=np.float32)).unsqueeze(0).unsqueeze(0)
+    tsdf = truncate_sdf(np.asarray(grid, dtype=np.float32))
+    x = torch.from_numpy(tsdf).unsqueeze(0).unsqueeze(0)
     x = x.to(device)  # (1, 1, D, D, D)
 
     with torch.no_grad():
         recon = model(x)
 
-    return recon.squeeze().cpu().numpy()
+    return truncate_sdf(recon.squeeze().cpu().numpy())
 
 
 if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = Conv3dAE(input_size=48, latent_dim=32)
+    model = Conv3dAE(input_size=48, latent_dim=64)
     if not CHECKPOINT_PATH.is_file():
         raise FileNotFoundError(
             f"Checkpoint not found: {CHECKPOINT_PATH}. Run models.CAE.train first."
@@ -58,6 +59,6 @@ if __name__ == "__main__":
     print(f"full reconstruction MSE: {mse}")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    np.save(OUTPUT_DIR / "test1_original.npy", original)
-    np.save(OUTPUT_DIR / "test1_recon.npy", reconstruction)
+    np.save(OUTPUT_DIR / "test4_tsdf_original.npy", original)
+    np.save(OUTPUT_DIR / "test4_tsdf_recon.npy", reconstruction)
     print(f"saved both grids to {OUTPUT_DIR}")
