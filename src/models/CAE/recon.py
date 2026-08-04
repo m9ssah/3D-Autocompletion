@@ -8,7 +8,7 @@ from common.dataset import SDFDataset, truncate_sdf
 from .CAE import Conv3dAE
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-CHECKPOINT_PATH = PROJECT_ROOT / "artifacts" / "cae" / "conv3d_ae_20_signweight_1.pt"
+CHECKPOINT_PATH = PROJECT_ROOT / "artifacts" / "cae" / "conv3d_ae_64_geometry_loss.pt"
 OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "cae" / "renders"
 
 
@@ -61,5 +61,5 @@ if __name__ == "__main__":
     print(f"full reconstruction MSE: {mse}")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    np.save(OUTPUT_DIR / "test_conv3d_ae_20_signweight_1.npy", reconstruction)
+    np.save(OUTPUT_DIR / "test_conv3d_ae_64_geometry_loss.npy", reconstruction)
     print(f"saved both grids to {OUTPUT_DIR}")

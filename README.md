@@ -3,7 +3,6 @@
 Montiors, 48x48x48
 
 ## Day 1-2 Task Progress:
-
 - [X] Repo structure **(after conversion is finished, create ModelNet40/sdf_conversion/[data_splits])**
 - [X] Train/val/test split 
 - [X] SDF voxelization conversion pipeline
@@ -13,14 +12,20 @@ Montiors, 48x48x48
 - [X] Evaluation utilities (masked IoU/SDF error, timer, result recorder, render helper) built and unit-tested on dummy arrays
 
 ## Day 3-4 Task Progress:
-- [ ] unify k value (32?)
-- [ ] PCA: SVD computed via economy method, k-sweep reconstruction chart, artifacts saved
+- [X] unify k value
+- [X] PCA: SVD computed via economy method, k-sweep reconstruction chart, artifacts saved
 - [X] AE: SDF value range checked (truncated if needed), trained, reconstruction evaluated via the shared (all-ones-mask) utility, artifacts saved
     - [X] Encoder: a few Conv3d layers downsampling 48³ → roughly 6³ (stride-2 convs, doubling channels each step: 1→16→32→64), flattened and projected to your k=32 latent vector via a final linear layer
     - [X] Decoder: mirror this with ConvTranspose3d layers back up to 48³
     - [X] Output activation: linear, b/c regressing continuous SDF values now, not occupancy probabilities
     - [X] Loss: MSE, not BCE, for the same reason
-- [ ] Both looked at at least one rendered reconstruction (marching cubes) per branch, not just the numeric error
+- [X] Both looked at at least one rendered reconstruction (marching cubes) per branch, not just the numeric error
+
+## Day 5-6 Task Progress:
+- [ ] AE completion: mask a shape, optimize z through frozen decoder + single-Gaussian prior (skip full GMM for now)
+- [ ] PCA closed-form completion, single-Gaussian prior version
+- [ ] draft lit review + problem formulation
+
 
 ## Task Split:
 

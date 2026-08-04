@@ -1,0 +1,18 @@
+{
+  "mse": 0.00023551086295115324,
+  "mae": 0.006016436564352583,
+  "rmse": 0.013378198521540445,
+  "iou": 0.671110685375455,
+  "dice": 0.780048682980902,
+  "sign_accuracy": 0.9799898301334424,
+  "surface_mae": 0.01620935062494348,
+  "surface_sign_accuracy": 0.8281829279730542,
+  "mesh_vertices": 4719.2,
+  "mesh_faces": 9375.529411764706,
+  "mesh_components": 5.458823529411765,
+  "largest_component_face_fraction": 0.9264222252893545,
+  "checkpoint": "C:\\Users\\massah\\Documents\\GitHub\\3D-Autocompletion\\artifacts\\cae\\conv3d_ae_control_soft_w01_40ep_seed42.pt",
+  "split": "validation",
+  "num_shapes": 85,
+  "tsdf_truncation": 0.1
+}
