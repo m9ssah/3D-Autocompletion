@@ -2,7 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import Dataset
 
 TSDF_TRUNCATION = 0.1
 
