@@ -5,7 +5,8 @@ import torch
 import torch.nn.functional as F
 from torch import optim
 
-from ...common.dataset import TSDF_TRUNCATION, SDFDataset
+from common.dataset import TSDF_TRUNCATION, SDFDataset
+
 from .CAE import Conv3dAE
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -22,7 +23,7 @@ def train(model, epochs, batch_size, learning_rate, train_dataset, val_dataset, 
         train_dataset, batch_size=batch_size, shuffle=True
     )
     val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=batch_size, shuffle=True
+        val_dataset, batch_size=batch_size, shuffle=False
     )
 
     history = {"train_loss": [], "val_loss": []}
@@ -122,7 +123,7 @@ if __name__ == "__main__":
 
     history = train(
         model,
-        epochs=40,
+        epochs=20,
         batch_size=8,
         learning_rate=1e-3,
         train_dataset=train_dataset,
@@ -132,6 +133,6 @@ if __name__ == "__main__":
     plot_history(history)
 
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-    checkpoint_path = ARTIFACT_DIR / "conv3d_ae_64_geometry_loss_v4.pt"
+    checkpoint_path = ARTIFACT_DIR / "conv3d_ae_20_signweight_1.pt"
     torch.save(model.state_dict(), checkpoint_path)
     print(f"checkpoint saved to: {checkpoint_path}")
