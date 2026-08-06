@@ -22,9 +22,18 @@ Montiors, 48x48x48
 - [X] Both looked at at least one rendered reconstruction (marching cubes) per branch, not just the numeric error
 
 ## Day 5-6 Task Progress:
-- [ ] AE completion: mask a shape, optimize z through frozen decoder + single-Gaussian prior (skip full GMM for now)
+- [ ] AE completion: 
+    - [ ] mask a shape, 
+    - [ ] optimize z through frozen decoder
+    - [ ] single-Gaussian prior (skip full GMM for now)
 - [ ] PCA closed-form completion, single-Gaussian prior version
 - [ ] draft lit review + problem formulation
+
+
+# Day 7 Task Progress:
+- [ ] GMM/EM fit on both real latent spaces
+- [ ] Upgrade AE completion to use the real GMM prior
+- [ ] Start the evaluation suite: masked IoU/SDF error, prior ablation (λ=0 vs λ>0) — this ablation is your originality evidence, don't cut it
 
 
 ## Task Split:
