@@ -47,7 +47,7 @@ def masked_iou(pred_grid, gt_grid, mask, threshold=0.0):
     pred_inside = (pred_grid < threshold) & occluded
     gt_inside = (gt_grid < threshold) & occluded
 
-    return _iou(pred_inside, gt_inside)[0]
+    return _iou(pred_inside, gt_inside)
 
 
 def masked_sdf_error(pred_grid, gt_grid, mask, norm="l1"):
