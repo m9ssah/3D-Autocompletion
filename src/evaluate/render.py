@@ -144,30 +144,9 @@ def render_comparison(pred_grid, gt_grid, level=0.0, save_path=None):
 
 
 if __name__ == "__main__":
-
-    # data = np.load("../artifacts/cae/completions/monitor_0554_halfspace_completion.npz")
-    # mesh = render_grid(
-    #     data["completion"],
-    #     save_path="../artifacts/cae/completions/monitor_0554_halfspace_completion.png",
-    #     title="CAE completion",
-    #     bounds="grid",
-    #     hide_axes=True,
-    # )
-    # mesh.export("../artifacts/cae/completions/monitor_0554_halfspace_completion.obj")
-
     for i in range(481, 492):
         path = f"../artifacts/cae/reconstructions/expand_CAE/monitor_0{i}_reconstruction.npz"
-        with np.load(path) as data:
-            # prefer common key names, otherwise fall back to the first array in the archive
-            if "reconstructions" in data.files:
-                grid = data["reconstructions"]
-            elif "reconstruction" in data.files:
-                grid = data["reconstruction"]
-            elif len(data.files) > 0:
-                grid = data[data.files[0]]
-            else:
-                print(f"{path}: archive contains no arrays, skipping")
-                continue
+        grid = np.load(path)["reconstruction"]
 
         mesh = render_grid(
             grid,
