@@ -1,6 +1,6 @@
 # 3D-Autocompletion
 
-Montiors, 48x48x48
+Monitors, 48x48x48
 
 ## Day 1-2 Task Progress:
 - [X] Repo structure **(after conversion is finished, create ModelNet40/sdf_conversion/[data_splits])**
