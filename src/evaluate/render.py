@@ -5,9 +5,12 @@ Usage:
     check main block
 """
 
+import tempfile
 import warnings
+from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import trimesh
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from skimage.measure import marching_cubes
@@ -141,39 +144,39 @@ def render_comparison(pred_grid, gt_grid, level=0.0, save_path=None):
 
 
 if __name__ == "__main__":
-    import tempfile
-    from pathlib import Path
 
-    import numpy as np
+    # data = np.load("../artifacts/cae/completions/monitor_0554_halfspace_completion.npz")
+    # mesh = render_grid(
+    #     data["completion"],
+    #     save_path="../artifacts/cae/completions/monitor_0554_halfspace_completion.png",
+    #     title="CAE completion",
+    #     bounds="grid",
+    #     hide_axes=True,
+    # )
+    # mesh.export("../artifacts/cae/completions/monitor_0554_halfspace_completion.obj")
 
-    N = 20
-    center = (N - 1) / 2
-    zz, yy, xx = np.meshgrid(np.arange(N), np.arange(N), np.arange(N), indexing="ij")
-    dist_from_center = np.sqrt(
-        (xx - center) ** 2 + (yy - center) ** 2 + (zz - center) ** 2
-    )
-    radius = N / 3
-    gt_grid = (dist_from_center - radius).astype(np.float32)  # sphere SDF
+    for i in range(481, 492):
+        path = f"../artifacts/cae/reconstructions/expand_CAE/monitor_0{i}_reconstruction.npz"
+        with np.load(path) as data:
+            # prefer common key names, otherwise fall back to the first array in the archive
+            if "reconstructions" in data.files:
+                grid = data["reconstructions"]
+            elif "reconstruction" in data.files:
+                grid = data["reconstruction"]
+            elif len(data.files) > 0:
+                grid = data[data.files[0]]
+            else:
+                print(f"{path}: archive contains no arrays, skipping")
+                continue
 
-    rng = np.random.default_rng(0)
-    pred_grid = gt_grid + rng.normal(scale=0.3, size=gt_grid.shape).astype(np.float32)
-
-    out_dir = Path(tempfile.mkdtemp())
-
-    mesh = grid_to_mesh(gt_grid)
-    print(f"marching cubes ok: {len(mesh.vertices)} verts, {len(mesh.faces)} faces")
-    mesh.export(out_dir / "dummy_sphere.obj")
-    print(f"exported obj to {out_dir / 'dummy_sphere.obj'}")
-
-    png_path = out_dir / "dummy_comparison.png"
-    render_comparison(pred_grid, gt_grid, save_path=png_path)
-    print(f"saved comparison render to {png_path}")
-
-    print("DEGENERATE GRID (all-positive, no zero crossing, expect None + warning):")
-    all_outside_grid = np.abs(gt_grid) + 1.0  # shift entirely positive
-    degenerate_mesh = grid_to_mesh(all_outside_grid)
-    print("grid_to_mesh returned:", degenerate_mesh)
-
-    degenerate_png_path = out_dir / "dummy_degenerate_comparison.png"
-    render_comparison(all_outside_grid, gt_grid, save_path=degenerate_png_path)
-    print(f"saved degenerate comparison render (no crash) to {degenerate_png_path}")
+        mesh = render_grid(
+            grid,
+            save_path=f"../artifacts/cae/reconstructions/expanded_{i}.png",
+            title="CAE reconstruction",
+            bounds="grid",
+            hide_axes=True,
+        )
+        if mesh is not None:
+            mesh.export(f"../artifacts/cae/reconstructions/expanded_{i}.obj")
+        else:
+            print(f"{path}: no surface found, skipping export")

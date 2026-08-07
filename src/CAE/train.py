@@ -9,7 +9,7 @@ from common.dataset import TSDF_TRUNCATION, SDFDataset
 
 from .CAE import Conv3dAE
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "cae"
 
 
@@ -68,6 +68,10 @@ def train(
     return history
 
 
+def MSE_loss(recon, target):
+    return F.mse_loss(recon, target)
+
+
 def geometry_aware_composite_loss(
     recon,
     target,
@@ -122,6 +126,7 @@ def plot_history(history, path=None):
         else Path(path)
     )
 
+    path.parent.mkdir(parents=True, exist_ok=True)
     plt.figure()
     plt.plot(history["train_loss"], label="Train")
     plt.plot(history["val_loss"], label="Validation")
@@ -154,11 +159,10 @@ if __name__ == "__main__":
         device=device,
         loss_kwargs={"sign_target": "soft", "sign_weight": 0.05},
     )
+    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
     plot_history(
         history, ARTIFACT_DIR / "conv3d_ae_64_geometry_soft_w005_40ep_history.png"
     )
-
-    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
     checkpoint_path = ARTIFACT_DIR / "conv3d_ae_64_geometry_soft_w005_40ep.pt"
     torch.save(model.state_dict(), checkpoint_path)
     print(f"checkpoint saved to: {checkpoint_path}")

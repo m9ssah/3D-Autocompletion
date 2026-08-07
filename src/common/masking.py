@@ -57,22 +57,22 @@ def apply_masking(grid, mask_type="halfspace", axis=2, seed=None):
 
 if __name__ == "__main__":
     N = 48
-    shape_path = Path("../../ModelNet40/sdf_conversion/monitor/train/monitor_0001.npy")
+    shape_path = Path("../../ModelNet40/sdf_conversion/monitor/test/monitor_0481.npy")
     grid = np.load(shape_path)
     print("block test:")
     partial_grid, mask = apply_masking(grid, mask_type="block", seed=42)
     print(f"grid shape={grid.shape}, visible voxels: {mask.sum()} / {mask.size}")
 
-    out_path = Path("../../artifacts/masks/monitor_0001_partial_block.npy")
+    out_path = Path("../../artifacts/masks/monitor_0002_partial_block.npy")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     np.save(out_path, partial_grid)
     print(f"saved masked block partial grid to {out_path}")
 
     print("halfspace test:")
-    partial_grid, mask = apply_masking(grid, mask_type="halfspace", axis=1, seed=42)
+    partial_grid, mask = apply_masking(grid, mask_type="halfspace", axis=2, seed=42)
     print(f"grid shape={grid.shape}, visible voxels: {mask.sum()} / {mask.size}")
 
-    out_path = Path("../../artifacts/masks/monitor_0001_partial_halfspace.npy")
+    out_path = Path("../../artifacts/masks/monitor_0002_partial_halfspace.npy")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     np.save(out_path, partial_grid)
     print(f"saved masked halfspace partial grid to {out_path}")
