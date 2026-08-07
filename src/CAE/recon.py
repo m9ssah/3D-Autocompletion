@@ -9,12 +9,8 @@ from common.dataset import SDFDataset, truncate_sdf
 from .CAE import Conv3dAE
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CHECKPOINT = (
-    PROJECT_ROOT / "artifacts" / "cae" / "conv3d_ae_128_geometry_soft_w005_40ep.pt"
-)
-DEFAULT_OUTPUT_DIR = (
-    PROJECT_ROOT / "artifacts" / "cae" / "reconstructions" / "expand_CAE"
-)
+DEFAULT_CHECKPOINT = PROJECT_ROOT / "artifacts" / "cae" / "conv3d_75_surface_weight.pt"
+DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "cae" / "reconstructions" / "75sw"
 
 
 def reconstruct(model, grid, device):
@@ -70,7 +66,7 @@ if __name__ == "__main__":
 
         shape_id = test_dataset.files[index].stem
         mse = float(np.mean((reconstruction - original) ** 2))
-        output_path = args.output_dir / f"{shape_id}_reconstruction.npz"
+        output_path = args.output_dir / f"{shape_id}.npz"
         np.savez_compressed(
             output_path,
             original=original,

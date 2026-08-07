@@ -76,7 +76,7 @@ def geometry_aware_composite_loss(
     recon,
     target,
     truncation=TSDF_TRUNCATION,
-    surface_weight=5.0,
+    surface_weight=7.5,
     huber_beta=0.02,
     sign_weight=0.1,
     sign_temperature=0.02,
@@ -160,9 +160,7 @@ if __name__ == "__main__":
         loss_kwargs={"sign_target": "soft", "sign_weight": 0.05},
     )
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-    plot_history(
-        history, ARTIFACT_DIR / "conv3d_ae_64_geometry_soft_w005_40ep_history.png"
-    )
-    checkpoint_path = ARTIFACT_DIR / "conv3d_ae_64_geometry_soft_w005_40ep.pt"
+    plot_history(history, ARTIFACT_DIR / "conv3d_75_surface_weight.png")
+    checkpoint_path = ARTIFACT_DIR / "conv3d_75_surface_weight.pt"
     torch.save(model.state_dict(), checkpoint_path)
     print(f"checkpoint saved to: {checkpoint_path}")

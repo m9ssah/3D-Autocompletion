@@ -145,17 +145,17 @@ def render_comparison(pred_grid, gt_grid, level=0.0, save_path=None):
 
 if __name__ == "__main__":
     for i in range(481, 492):
-        path = f"../artifacts/cae/reconstructions/expand_CAE/monitor_0{i}_reconstruction.npz"
+        path = f"../artifacts/cae/reconstructions/75sw/monitor_0{i}.npz"
         grid = np.load(path)["reconstruction"]
 
         mesh = render_grid(
             grid,
-            save_path=f"../artifacts/cae/reconstructions/expanded_{i}.png",
+            save_path=f"../artifacts/cae/reconstructions/75sw/monitor_0{i}.png",
             title="CAE reconstruction",
             bounds="grid",
             hide_axes=True,
         )
         if mesh is not None:
-            mesh.export(f"../artifacts/cae/reconstructions/expanded_{i}.obj")
+            mesh.export(f"../artifacts/cae/reconstructions/75sw/monitor_0{i}.obj")
         else:
             print(f"{path}: no surface found, skipping export")
