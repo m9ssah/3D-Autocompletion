@@ -1,0 +1,26 @@
+[
+  {
+    "method": "encoded_partial",
+    "lambda_prior": null,
+    "mean_masked_iou": 0.07861473358456464,
+    "mean_masked_sdf_l1": 0.01283562183380127
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 0.0,
+    "mean_masked_iou": 0.4444347654970465,
+    "mean_masked_sdf_l1": 0.009272398427128792
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 1e-05,
+    "mean_masked_iou": 0.4549025840763771,
+    "mean_masked_sdf_l1": 0.008957111276686192
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 0.0001,
+    "mean_masked_iou": 0.44680637849452237,
+    "mean_masked_sdf_l1": 0.008520843461155891
+  }
+]

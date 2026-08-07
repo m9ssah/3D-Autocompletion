@@ -22,18 +22,20 @@ Montiors, 48x48x48
 - [X] Both looked at at least one rendered reconstruction (marching cubes) per branch, not just the numeric error
 
 ## Day 5-6 Task Progress:
-- [ ] AE completion: 
-    - [ ] mask a shape, 
-    - [ ] optimize z through frozen decoder
-    - [ ] single-Gaussian prior (skip full GMM for now)
-- [ ] PCA closed-form completion, single-Gaussian prior version
-- [ ] draft lit review + problem formulation
+- [X] AE completion: 
+    - [X] mask a shape, 
+    - [X] optimize z through frozen decoder
+    - [X] single-Gaussian prior (skip full GMM for now)
+- [X] PCA closed-form completion, single-Gaussian prior version
+- [X] draft lit review + problem formulation
 
 
 # Day 7 Task Progress:
-- [ ] GMM/EM fit on both real latent spaces
-- [ ] Upgrade AE completion to use the real GMM prior
-- [ ] Start the evaluation suite: masked IoU/SDF error, prior ablation (λ=0 vs λ>0) — this ablation is your originality evidence, don't cut it
+- [X] GMM/EM fit on both real latent spaces
+- [X] Upgrade AE completion to use the real GMM prior
+- [X] Start the evaluation suite: masked IoU/SDF error, prior ablation (λ=0 vs λ>0)
+- [ ] Generate qualitative renders
+- [ ] more progress on report document
 
 
 ## Task Split:
@@ -43,8 +45,8 @@ Montiors, 48x48x48
 |July 31| **Joint:** masking function, generic GMM/EM utility (tested on synthetic codes, not real ones yet), generic evaluation utility (masked IoU/SDF error, solve-time timer, marching-cubes render helper). begin full-category batch voxelize/SDF conversion in the background using the existing scripts. | Same |
 | Aug 1 | PCA fit (SVD), reconstruction eval using the shared utility | Finish/train conv autoencoder, reconstruction eval |
 | Aug 2 | PCA closed-form completion (single-Gaussian case first) | AE gradient-based completion (Adam optimization through frozen decoder) |
-| Aug 3 | Extend to full GMM-weighted closed-form completion; draft your Problem Formulation subsection (PCA half) and Lit Review (classical papers) whenever you have downtime | Refine/tune AE completion; draft your Problem Formulation subsection (AE half) and Lit Review (modern papers) whenever you have downtime |
-| Aug 4 | **Joint** fit GMM/EM on both branches' *actual* latent codes using the shared utility from day 1-2 | Same |
-| Aug 5 | **Joint** full evaluation: masked IoU/SDF error both branches, prior ablation (λ=0 vs λ>0), solve-time comparison, qualitative renders | Same |
-| Aug 5 | **Joint** Results, Limitations, Conclusion sections (need metrics from both branches). Merge with earlier-drafted Intro/Lit Review/Problem Formulation | Same |
-| Aug 6 | Final polish, formatting, contributions section, llm.pdf, submit | Same |
+| Aug 4| Extend to full GMM-weighted closed-form completion; draft your Problem Formulation subsection (PCA half) and Lit Review (classical papers) whenever you have downtime | Refine/tune AE completion; draft your Problem Formulation subsection (AE half) and Lit Review (modern papers) whenever you have downtime |
+| Aug 5 | **Joint** fit GMM/EM on both branches' *actual* latent codes using the shared utility from day 1-2 | Same |
+| Aug 6 | **Joint** full evaluation: masked IoU/SDF error both branches, prior ablation (λ=0 vs λ>0), solve-time comparison, qualitative renders | Same |
+| Aug 6 | **Joint** Results, Limitations, Conclusion sections (need metrics from both branches). Merge with earlier-drafted Intro/Lit Review/Problem Formulation | Same |
+| Aug 7 | Final polish, formatting, contributions section, llm.pdf, submit | Same |

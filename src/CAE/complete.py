@@ -48,7 +48,7 @@ def complete(
     mask,
     gmm,
     device,
-    lambda_prior=0.1,
+    lambda_prior=1e-5,
     steps=500,
     learning_rate=1e-2,
     truncation=TSDF_TRUNCATION,
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--axis", type=int, choices=(0, 1, 2), default=2)
     parser.add_argument("--mask-seed", type=int, default=42)
-    parser.add_argument("--lambda-prior", type=float, default=0.1)
+    parser.add_argument("--lambda-prior", type=float, default=1e-5)
     parser.add_argument("--steps", type=int, default=500)
     parser.add_argument("--learning-rate", type=float, default=1e-2)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
