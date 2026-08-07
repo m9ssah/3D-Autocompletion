@@ -23,12 +23,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "cae" / "completion_tuning"
 
 
-def decode_partial_baseline(model, partial_grid, device):
+def decode_partial_baseline(model, partial_grid, mask, device):
     """Decode the encoded partial TSDF without latent optimization."""
     partial_tensor = torch.from_numpy(partial_grid).to(device)[None, None]
+    encoder_input = partial_tensor
+    if getattr(model, "input_channels", 1) == 2:
+        mask_tensor = torch.from_numpy(mask.astype(np.float32)).to(device)[None, None]
+        encoder_input = torch.cat((partial_tensor, mask_tensor), dim=1)
     with torch.no_grad():
         reconstruction = torch.clamp(
-            model(partial_tensor), -TSDF_TRUNCATION, TSDF_TRUNCATION
+            model(encoder_input), -TSDF_TRUNCATION, TSDF_TRUNCATION
         )
     return reconstruction.squeeze().cpu().numpy()
 
@@ -37,6 +41,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", type=Path, default=DEFAULT_CHECKPOINT)
     parser.add_argument("--train-latents", type=Path, default=DEFAULT_TRAIN_LATENTS)
+    parser.add_argument("--input-channels", type=int, choices=(1, 2), default=1)
     parser.add_argument("--split", choices=("validation", "test"), default="validation")
     parser.add_argument(
         "--lambdas", type=float, nargs="+", default=[0.0, 0.00001, 0.0001, 0.001]
@@ -73,7 +78,7 @@ if __name__ == "__main__":
     with np.load(train_latents) as data:
         gmm = fit_single_gaussian(data["codes"])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = load_model(checkpoint, device)
+    model = load_model(checkpoint, device, input_channels=args.input_channels)
     recorder = ResultRecorder()
 
     for index in range(num_shapes):
@@ -83,7 +88,7 @@ if __name__ == "__main__":
         )
         shape_id = dataset.files[index].stem
 
-        baseline = decode_partial_baseline(model, partial, device)
+        baseline = decode_partial_baseline(model, partial, mask, device)
         recorder.add(
             shape_id=shape_id,
             method="encoded_partial",
