@@ -1,0 +1,21 @@
+{
+  "selection": {
+    "representative": "nearest-to-median test-set IoU",
+    "illustrative_monitor_arm": "chosen for visible arm/support geometry; not a statistical representative"
+  },
+  "full_reconstruction": {
+    "shape_id": "monitor_0505",
+    "iou": 0.6522589052997394
+  },
+  "halfspace_completion": {
+    "shape_id": "monitor_0527",
+    "masked_iou": 0.352
+  },
+  "geometry_aware_block_completion": {
+    "shape_id": "monitor_0482",
+    "masked_iou": 0.6717171717171717
+  },
+  "illustrative_monitor_arm": {
+    "shape_id": "monitor_0481"
+  }
+}

@@ -5,9 +5,7 @@ Usage:
     check main block
 """
 
-import tempfile
 import warnings
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
