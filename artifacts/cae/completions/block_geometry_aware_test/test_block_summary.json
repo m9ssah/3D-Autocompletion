@@ -1,0 +1,20 @@
+[
+  {
+    "method": "encoded_partial",
+    "lambda_prior": null,
+    "mean_masked_iou": 0.37233022776783303,
+    "mean_masked_sdf_l1": 0.019515501335263252
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 0.0,
+    "mean_masked_iou": 0.6655242044910978,
+    "mean_masked_sdf_l1": 0.011069443076848984
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 1e-05,
+    "mean_masked_iou": 0.6595948507533927,
+    "mean_masked_sdf_l1": 0.011312957853078842
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "method": "encoded_partial",
+    "lambda_prior": null,
+    "mean_masked_iou": 0.4165866837787936,
+    "mean_masked_sdf_l1": 0.017073186114430428
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 0.0,
+    "mean_masked_iou": 0.7106166041357929,
+    "mean_masked_sdf_l1": 0.009620298631489277
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 1e-06,
+    "mean_masked_iou": 0.7117127645501937,
+    "mean_masked_sdf_l1": 0.009557041339576244
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 1e-05,
+    "mean_masked_iou": 0.712090709539969,
+    "mean_masked_sdf_l1": 0.009569921530783176
+  },
+  {
+    "method": "latent_optimized",
+    "lambda_prior": 0.0001,
+    "mean_masked_iou": 0.6887562084673318,
+    "mean_masked_sdf_l1": 0.010026207193732262
+  }
+]
