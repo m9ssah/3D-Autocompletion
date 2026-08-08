@@ -1,0 +1,26 @@
+{
+  "selection": {
+    "full_reconstruction": "nearest-to-median test-set reconstruction IoU",
+    "completion": "nearest-to-median test-set IoU improvement over the encoded-partial baseline",
+    "illustrative_monitor_arm": "chosen for visible arm/support geometry; not a statistical representative"
+  },
+  "full_reconstruction": {
+    "shape_id": "monitor_0516",
+    "iou": 0.7071544715447154
+  },
+  "illustrative_monitor_arm": {
+    "shape_id": "monitor_0481"
+  },
+  "halfspace_completion": {
+    "shape_id": "monitor_0548",
+    "lambda_prior": 1e-05,
+    "baseline_masked_iou": 0.1627049180327869,
+    "optimized_masked_iou": 0.5013757260776521
+  },
+  "geometry_aware_block_completion": {
+    "shape_id": "monitor_0563",
+    "lambda_prior": 0.0,
+    "baseline_masked_iou": 0.5544492843808339,
+    "optimized_masked_iou": 0.8367952522255193
+  }
+}
